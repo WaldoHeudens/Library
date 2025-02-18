@@ -22,7 +22,7 @@ namespace Library.Controllers
         // GET: Books
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Book.Include(b => b.Author);
+            var applicationDbContext = _context.Book.Where(b => b.Deleted > DateTime.Now).Include(b => b.Author);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -57,7 +57,7 @@ namespace Library.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ISBN,Title,AuthorId")] Book book)
+        public async Task<IActionResult> Create([Bind("Id,ISBN,Title,AuthorId,Date")] Book book)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace Library.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Author, "Id", "Id", book.AuthorId);
+            ViewData["AuthorId"] = new SelectList(_context.Author, "Id", "LastName", book.AuthorId);
             return View(book);
         }
 
@@ -82,7 +82,7 @@ namespace Library.Controllers
             {
                 return NotFound();
             }
-            ViewData["Authors"] = new SelectList(_context.Author, "Id", "LastName", book.AuthorId);
+            ViewData["AuthorId"] = new SelectList(_context.Author, "Id", "LastName", book.AuthorId);
             return View(book);
         }
 
@@ -91,7 +91,7 @@ namespace Library.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ISBN,Title,AuthorId")] Book book)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ISBN,Title,AuthorId,Date")] Book book)
         {
             if (id != book.Id)
             {
@@ -149,7 +149,9 @@ namespace Library.Controllers
             var book = await _context.Book.FindAsync(id);
             if (book != null)
             {
-                _context.Book.Remove(book);
+                //                _context.Book.Remove(book);
+                book.Deleted = DateTime.Now;
+                _context.Update(book);
             }
 
             await _context.SaveChangesAsync();

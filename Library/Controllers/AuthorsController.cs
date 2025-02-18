@@ -22,7 +22,7 @@ namespace Library.Controllers
         // GET: Authors
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Author.ToListAsync());
+            return View(await _context.Author.Where(a => a.Deleted > DateTime.Now).ToListAsync());
         }
 
         // GET: Authors/Details/5
@@ -142,7 +142,9 @@ namespace Library.Controllers
             var author = await _context.Author.FindAsync(id);
             if (author != null)
             {
-                _context.Author.Remove(author);
+                //                _context.Author.Remove(author);
+                author.Deleted = DateTime.Now;
+                _context.Update(author);
             }
 
             await _context.SaveChangesAsync();
