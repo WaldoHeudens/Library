@@ -29,6 +29,7 @@ namespace Library.Areas.Identity.Pages.Account
         private readonly IUserStore<LibraryUser> _userStore;
         private readonly IUserEmailStore<LibraryUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
+        //private readonly IUserRoleStore<LibraryUser> _userRoleStore;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
@@ -36,6 +37,7 @@ namespace Library.Areas.Identity.Pages.Account
             IUserStore<LibraryUser> userStore,
             SignInManager<LibraryUser> signInManager,
             ILogger<RegisterModel> logger,
+            //IUserRoleStore<LibraryUser> userRoleStore,
             IEmailSender emailSender)
         {
             _userManager = userManager;
@@ -43,6 +45,7 @@ namespace Library.Areas.Identity.Pages.Account
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
+            //_userRoleStore = userRoleStore;
             _emailSender = emailSender;
         }
 
@@ -139,6 +142,8 @@ namespace Library.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
+                    await _userManager.AddToRoleAsync(user, "USER");
+
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(

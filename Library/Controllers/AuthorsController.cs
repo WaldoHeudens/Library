@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Library.Data;
 using Library.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Library.Controllers
 {
+    [Authorize (Roles = "ContentAdmin,User")]
     public class AuthorsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -43,6 +45,7 @@ namespace Library.Controllers
             return View(author);
         }
 
+        [Authorize(Roles = "ContentAdmin")]
         // GET: Authors/Create
         public IActionResult Create()
         {
@@ -65,6 +68,7 @@ namespace Library.Controllers
             return View(author);
         }
 
+        [Authorize(Roles = "ContentAdmin")]
         // GET: Authors/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -117,6 +121,7 @@ namespace Library.Controllers
         }
 
         // GET: Authors/Delete/5
+        [Authorize(Roles = "ContentAdmin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

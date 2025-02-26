@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Library.Data;
 using Library.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Library.Controllers
 {
+    [Authorize(Roles = "ContentAdmin,User")]
     public class BooksController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -19,6 +21,7 @@ namespace Library.Controllers
             _context = context;
         }
 
+        [AllowAnonymous]
         // GET: Books
         public async Task<IActionResult> Index()
         {
@@ -46,6 +49,7 @@ namespace Library.Controllers
         }
 
         // GET: Books/Create
+        [Authorize(Roles = "ContentAdmin")]
         public IActionResult Create()
         {
             ViewData["AuthorId"] = new SelectList(_context.Author, "Id", "Id");
@@ -70,6 +74,7 @@ namespace Library.Controllers
         }
 
         // GET: Books/Edit/5
+        [Authorize(Roles = "ContentAdmin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -123,6 +128,7 @@ namespace Library.Controllers
         }
 
         // GET: Books/Delete/5
+        [Authorize(Roles = "ContentAdmin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

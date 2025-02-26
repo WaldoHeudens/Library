@@ -11,7 +11,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-    builder.Services.AddDefaultIdentity<LibraryUser>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddDefaultIdentity<LibraryUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>()  // Toe te voegen om met rollen te kunnen werken
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
@@ -43,5 +44,14 @@ app.MapControllerRoute(
 
 app.MapRazorPages()
    .WithStaticAssets();
+
+// Toegevoegd voor het seeden van de database
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = new ApplicationDbContext(services.GetRequiredService<DbContextOptions<ApplicationDbContext>>());
+    var userManager = services.GetRequiredService<UserManager<Library.Models.LibraryUser>>();
+    ContextSeeder.Initialize(context, userManager);
+}
 
 app.Run();
