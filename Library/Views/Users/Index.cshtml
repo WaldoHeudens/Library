@@ -23,12 +23,24 @@
             </th>
             <th></th>
         </tr>
+        <form asp_action="Index" method="get">
+        <tr>
+            <th></th>
+            <th>
+                <input name="voornaam" value="@ViewBag.Voornaam" onchange="$(this.form).submit();" />
+            </th>
+            <th>
+                <input name="achternaam" value="@ViewBag.Achternaam" onchange="$(this.form).submit();" />
+            </th>
+
+        </tr>
+        </form>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                 <td>
+                <td>
                     @Html.DisplayFor(modelItem => item.UserName)
                 </td>
                 <td>
@@ -41,7 +53,15 @@
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td>
-                    <a asp-action="Roles" asp-route-id="@item.Id">Roles</a>
+                    <a asp-action="Roles" asp-route-userName="@item.UserName">Roles</a> |
+                    @if (item.LockoutEnd > DateTime.Now)
+                    {
+                        <a asp-action="UnBlock" asp-route-userName="@item.UserName">Unblock</a>
+                    }
+                    else
+                    {
+                        <a asp-action="Block" asp-route-userName="@item.UserName">Block</a>
+                    }
                 </td>
             </tr>
         }
