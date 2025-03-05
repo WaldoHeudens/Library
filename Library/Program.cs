@@ -1,7 +1,10 @@
 using Library.Data;
 using Library.Models;
+using Library.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using MimeKit.Cryptography;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,12 +14,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<LibraryUser>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddDefaultIdentity<LibraryUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()  // Toe te voegen om met rollen te kunnen werken
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+// MailKit als service toevoegen
+builder.Services.AddTransient<IEmailSender, MailKitEmailSender>();
+
 var app = builder.Build();
+Globals.App = app;
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
