@@ -31,39 +31,35 @@ namespace Library.Controllers
             return View(await _context.Parameters.ToListAsync());
         }
 
-        // GET: Parameters/Edit/5
-        public async Task<IActionResult> Edit(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //// GET: Parameters/Edit/5
+        //public async Task<IActionResult> _EditPartial(string id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var parameter = await _context.Parameters.FindAsync(id);
-            if (parameter == null)
-            {
-                return NotFound();
-            }
-            return View(parameter);
-        }
+        //    var parameter = await _context.Parameters.FindAsync(id);
+        //    if (parameter == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return PartialView("_EditPartial", parameter);
+        //}
 
         // POST: Parameters/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Name,Value,Description,MemberId,LastChanged,Obsolete")] Parameter parameter)
+        public async Task<IActionResult> EditPartial(string name, string value, DateTime obsolete)
         {
-            if (id != parameter.Name)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+            Parameter parameter = _context.Parameters.First(p => p.Name == name);
+            try
                 {
                     parameter.LastChanged = DateTime.Now;
+                parameter.Value = value;
+                parameter.Obsolete = obsolete;
                     _context.Update(parameter);
                     await _context.SaveChangesAsync();
                     Parameter.Parameters[parameter.Name] = parameter;
@@ -80,9 +76,7 @@ namespace Library.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(parameter);
+            return PartialView("EditPartial", parameter);
         }
 
         private bool ParameterExists(string id)

@@ -1,3 +1,4 @@
+using AspNetCore.Unobtrusive.Ajax;
 using Library.Data;
 using Library.Models;
 using Library.Services;
@@ -22,6 +23,9 @@ builder.Services.AddControllersWithViews();
 // MailKit als service toevoegen
 builder.Services.AddTransient<IEmailSender, MailKitEmailSender>();
 
+// Add to use Ajax
+builder.Services.AddUnobtrusiveAjax();
+
 var app = builder.Build();
 Globals.App = app;
 
@@ -43,6 +47,9 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapStaticAssets();
+
+// Voorzie het gebruik van Ajax in de request-afhandeling
+app.UseUnobtrusiveAjax();
 
 app.MapControllerRoute(
     name: "default",

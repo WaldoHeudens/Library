@@ -20,12 +20,6 @@
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastChanged)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Obsolete)
             </th>
             <th></th>
@@ -33,29 +27,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Value)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastChanged)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Obsolete)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Name">Edit</a> 
-            </td>
-        </tr>
+      <partial name="EditPartial" model="item"/>     @*of:  @Html.Partial("EditPartial", item)*@
 }
     </tbody>
 </table>

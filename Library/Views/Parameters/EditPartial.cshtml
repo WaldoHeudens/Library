@@ -1,0 +1,25 @@
+﻿@model Library.Models.Parameter
+
+@{
+    Layout = null;
+}
+
+@using (Html.AjaxBeginForm("EditPartial", "Parameters", 
+            new AjaxOptions {HttpMethod="post", InsertionMode=InsertionMode.Replace, UpdateTargetId=Model.Name}))
+{
+    <tr id="#@Model.Name">
+        <td>
+            @Html.DisplayFor(Model => Model.Name)
+            <input type="hidden" asp-for="Name"/>
+        </td>
+        <td>
+            <input asp-for="Value" class="form-control" onchange="$(this.form).submit();" />
+        </td>
+        <td>
+            @Html.DisplayFor(Model => Model.Description)
+        </td>
+        <td>
+            <input asp-for="Obsolete" class="form-control" onchange="$(this.form).submit();" />
+        </td>
+    </tr>
+}
