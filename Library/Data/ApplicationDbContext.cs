@@ -10,8 +10,9 @@ namespace Library.Data
             : base(options)
         {
         }
-        public DbSet<Library.Models.Author> Author { get; set; } = default!;
-        public DbSet<Library.Models.Book> Book { get; set; } = default!;
+        public DbSet<Library.Models.Author> Authors { get; set; } = default!;
+        public DbSet<Library.Models.Book> Books { get; set; } = default!;
+        public DbSet<Library.Models.Language> Languages { get; set; } = default!;
         public DbSet<Library.Models.Parameter> Parameters { get; set; } = default!;
     }
 }

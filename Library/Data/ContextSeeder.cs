@@ -17,10 +17,30 @@ namespace Library.Data
             _context = context;
             _userManager = userManager;
 
+            SeedLanguages();
             SeedRoles();
             SeedUsers();
             SeedParameters(SystemAdmin);
         }
+
+
+        static void SeedLanguages()
+        {
+            if (!_context.Languages.Any())
+            {
+                _context.AddRange(
+                    new Language { Id = "- ", Name = "-", IsSystemLanguage = false, IsAvailable = DateTime.MaxValue },
+                    new Language { Id = "en", Name = "English", IsSystemLanguage = true },
+                    new Language { Id = "nl", Name = "Nederlands", IsSystemLanguage = true },
+                    new Language { Id = "fr", Name = "français", IsSystemLanguage = true },
+                    new Language { Id = "de", Name = "Deutsch", IsSystemLanguage = true }
+                    );
+                _context.SaveChanges();
+            }
+
+            Language.GetLanguages(_context);
+        }
+
 
         private static void SeedParameters(LibraryUser user)
         {

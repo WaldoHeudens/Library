@@ -24,7 +24,7 @@ namespace Library.Controllers
         // GET: Authors
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Author.Where(a => a.Deleted > DateTime.Now).ToListAsync());
+            return View(await _context.Authors.Where(a => a.Deleted > DateTime.Now).ToListAsync());
         }
 
         // GET: Authors/Details/5
@@ -35,7 +35,7 @@ namespace Library.Controllers
                 return NotFound();
             }
 
-            var author = await _context.Author
+            var author = await _context.Authors
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (author == null)
             {
@@ -77,7 +77,7 @@ namespace Library.Controllers
                 return NotFound();
             }
 
-            var author = await _context.Author.FindAsync(id);
+            var author = await _context.Authors.FindAsync(id);
             if (author == null)
             {
                 return NotFound();
@@ -129,7 +129,7 @@ namespace Library.Controllers
                 return NotFound();
             }
 
-            var author = await _context.Author
+            var author = await _context.Authors
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (author == null)
             {
@@ -144,7 +144,7 @@ namespace Library.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var author = await _context.Author.FindAsync(id);
+            var author = await _context.Authors.FindAsync(id);
             if (author != null)
             {
                 //                _context.Author.Remove(author);
@@ -158,7 +158,7 @@ namespace Library.Controllers
 
         private bool AuthorExists(int id)
         {
-            return _context.Author.Any(e => e.Id == id);
+            return _context.Authors.Any(e => e.Id == id);
         }
     }
 }
