@@ -27,6 +27,7 @@ namespace Library.Models
         [DataType(DataType.Date)]
         public DateTime LastChanged { get; set; }
 
+        [Display(Name = "Obsolete")]
         [DataType(DataType.Date)]
         public DateTime Obsolete { get; set; }
 

@@ -17,6 +17,12 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<LibraryUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()  // Toe te voegen om met rollen te kunnen werken
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+// Taal-resources toekennen aan de services
+builder.Services.AddLocalization(options => options.ResourcesPath = "LanguageResources");
+builder.Services.AddMvc()
+    .AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)
+    .AddDataAnnotationsLocalization();
 builder.Services.AddControllersWithViews();
 
 // MailKit als service toevoegen
@@ -57,6 +63,8 @@ app.MapControllerRoute(
 
 app.MapRazorPages()
    .WithStaticAssets();
+
+app.MapRazorPages();
 
 // Toegevoegd voor het seeden van de database
 using (var scope = app.Services.CreateScope())
