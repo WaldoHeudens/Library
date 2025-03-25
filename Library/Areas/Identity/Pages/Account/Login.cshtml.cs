@@ -66,6 +66,7 @@ namespace Library.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
+            [Display(Name = "UserName")]
             public string UserName { get; set; }
 
             /// <summary>
@@ -73,6 +74,7 @@ namespace Library.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
+            [Display(Name = "Password")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 

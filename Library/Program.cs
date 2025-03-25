@@ -28,6 +28,9 @@ builder.Services.AddControllersWithViews();
 // MailKit als service toevoegen
 builder.Services.AddTransient<IEmailSender, MailKitEmailSender>();
 
+// Add API services
+builder.Services.AddControllers();
+
 // Add to use Ajax
 builder.Services.AddUnobtrusiveAjax();
 
